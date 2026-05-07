@@ -9,6 +9,7 @@ import com.caballosapp.network.ApiClient
 import com.caballosapp.network.ApiService
 import kotlinx.coroutines.launch
 import com.caballosapp.models.RegisterRequest
+import com.caballosapp.network.RetrofitClient
 
 class AuthViewModel : ViewModel() {
 

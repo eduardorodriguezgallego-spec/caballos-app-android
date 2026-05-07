@@ -7,6 +7,8 @@ import android.widget.*
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import com.caballosapp.viewmodel.AuthViewModel
+import com.caballosapp.utils.fechaParaApi
+import com.caballosapp.utils.formatearFecha
 
 class RegistroActivity : ComponentActivity() {
 

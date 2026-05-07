@@ -8,7 +8,9 @@ import android.view.Gravity
 import android.widget.*
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
+import com.caballosapp.utils.fechaParaApi
 import com.caballosapp.viewmodel.ReservasViewModel
+import android.view.inputmethod.EditorInfo
 
 class CrearReservaActivity : ComponentActivity() {
 
@@ -55,7 +57,7 @@ class CrearReservaActivity : ComponentActivity() {
         }
 
         val etFecha = EditText(this).apply {
-            hint = "Fecha (2026-05-20)"
+            hint = "Fecha (20-05-2026)"
         }
 
         val etHora = EditText(this).apply {
@@ -64,6 +66,17 @@ class CrearReservaActivity : ComponentActivity() {
 
         val etComentarios = EditText(this).apply {
             hint = "Comentarios"
+
+            inputType =
+                InputType.TYPE_CLASS_TEXT or
+                        InputType.TYPE_TEXT_FLAG_CAP_SENTENCES or
+                        InputType.TYPE_TEXT_FLAG_MULTI_LINE or
+                        InputType.TYPE_TEXT_FLAG_AUTO_CORRECT
+
+            imeOptions = EditorInfo.IME_ACTION_DONE
+
+            isSingleLine = false
+            minLines = 3
         }
 
         val btnGuardar = Button(this).apply {
@@ -88,29 +101,21 @@ class CrearReservaActivity : ComponentActivity() {
         card.addView(btnVolver)
 
         fondo.addView(card)
-
         setContentView(fondo)
 
         btnGuardar.setOnClickListener {
-
             val caballoId = etCaballoId.text.toString().toIntOrNull()
 
             if (caballoId == null) {
-
-                Toast.makeText(
-                    this,
-                    "ID caballo inválido",
-                    Toast.LENGTH_LONG
-                ).show()
-
+                Toast.makeText(this, "ID caballo inválido", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
             viewModel.crearReserva(
                 token = token,
                 caballoId = caballoId,
-                fecha = etFecha.text.toString(),
-                hora = etHora.text.toString(),
+                fecha = fechaParaApi(etFecha.text.toString()),
+                hora = etHora.text.toString().take(5),
                 comentarios = etComentarios.text.toString()
             )
         }
@@ -120,28 +125,15 @@ class CrearReservaActivity : ComponentActivity() {
         }
 
         viewModel.mensaje.observe(this) { mensaje ->
-
             mensaje?.let {
-
-                Toast.makeText(
-                    this,
-                    it,
-                    Toast.LENGTH_LONG
-                ).show()
-
+                Toast.makeText(this, it, Toast.LENGTH_LONG).show()
                 finish()
             }
         }
 
         viewModel.error.observe(this) { error ->
-
             error?.let {
-
-                Toast.makeText(
-                    this,
-                    it,
-                    Toast.LENGTH_LONG
-                ).show()
+                Toast.makeText(this, it, Toast.LENGTH_LONG).show()
             }
         }
     }

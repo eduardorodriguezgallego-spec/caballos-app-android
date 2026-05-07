@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -9,40 +10,62 @@
         android:orientation="vertical"
         android:padding="24dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Detalles de la Reserva"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#3E2723"
+            android:layout_marginBottom="16dp"/>
+
         <EditText
             android:id="@+id/etCaballoId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="ID del caballo"
-            android:inputType="number" />
+            android:inputType="number"
+            android:padding="12dp" />
 
         <EditText
             android:id="@+id/etFecha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Fecha: 2026-05-24"
-            android:layout_marginTop="12dp" />
+            android:inputType="date"
+            android:layout_marginTop="12dp"
+            android:padding="12dp" />
 
         <EditText
             android:id="@+id/etHora"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Hora: 10:00"
-            android:layout_marginTop="12dp" />
+            android:inputType="time"
+            android:layout_marginTop="12dp"
+            android:padding="12dp" />
 
         <EditText
             android:id="@+id/etComentarios"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Comentarios"
-            android:layout_marginTop="12dp" />
+            android:hint="Comentarios (puedes usar tildes)"
+            android:inputType="textCapSentences|textMultiLine|textAutoCorrect"
+            android:gravity="top"
+            android:minLines="3"
+            android:layout_marginTop="12dp"
+            android:padding="12dp"
+            android:textColor="#000000"
+            android:background="@android:drawable/edit_text" />
 
         <Button
             android:id="@+id/btnGuardarReserva"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Guardar reserva"
-            android:layout_marginTop="20dp" />
+            android:layout_marginTop="24dp"
+            android:backgroundTint="#2E7D32"
+            android:textColor="#FFFFFF" />
 
     </LinearLayout>
 </ScrollView>
