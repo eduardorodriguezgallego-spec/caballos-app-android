@@ -5,13 +5,13 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.text.InputType
 import android.view.Gravity
+import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import com.caballosapp.utils.fechaParaApi
 import com.caballosapp.utils.formatearFecha
 import com.caballosapp.viewmodel.ReservasViewModel
-import android.view.inputmethod.EditorInfo
 
 class EditarReservaActivity : ComponentActivity() {
 
@@ -67,26 +67,19 @@ class EditarReservaActivity : ComponentActivity() {
 
         val etHora = EditText(this).apply {
             hint = "Hora (10:00)"
-            setText(intent.getStringExtra("hora"))
+            setText(intent.getStringExtra("hora")?.take(5) ?: "")
         }
 
         val etComentarios = EditText(this).apply {
-
             hint = "Comentarios"
-
-            inputType =
-                InputType.TYPE_CLASS_TEXT or
-                        InputType.TYPE_TEXT_FLAG_CAP_SENTENCES or
-                        InputType.TYPE_TEXT_FLAG_MULTI_LINE or
-                        InputType.TYPE_TEXT_FLAG_AUTO_CORRECT
-
+            inputType = InputType.TYPE_CLASS_TEXT or
+                    InputType.TYPE_TEXT_FLAG_CAP_SENTENCES or
+                    InputType.TYPE_TEXT_FLAG_MULTI_LINE or
+                    InputType.TYPE_TEXT_FLAG_AUTO_CORRECT
             imeOptions = EditorInfo.IME_ACTION_DONE
-
             isSingleLine = false
-
             minLines = 3
-
-            setText(intent.getStringExtra("comentarios"))
+            setText(intent.getStringExtra("comentarios") ?: "")
         }
 
         val btnGuardar = Button(this).apply {
@@ -121,12 +114,24 @@ class EditarReservaActivity : ComponentActivity() {
                 return@setOnClickListener
             }
 
+            val fecha = fechaParaApi(etFecha.text.toString())
+            val hora = etHora.text.toString().trim().take(5)
+
+            if (hora !in listOf("10:00", "11:00", "12:00", "13:00")) {
+                Toast.makeText(
+                    this,
+                    "La hora debe ser 10:00, 11:00, 12:00 o 13:00",
+                    Toast.LENGTH_LONG
+                ).show()
+                return@setOnClickListener
+            }
+
             viewModel.actualizarReserva(
                 token = token,
                 reservaId = reservaId,
                 caballoId = caballoId,
-                fecha = fechaParaApi(etFecha.text.toString()),
-                hora = etHora.text.toString().take(5),
+                fecha = fecha,
+                hora = hora,
                 comentarios = etComentarios.text.toString()
             )
         }

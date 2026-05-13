@@ -5,8 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.caballosapp.models.LoginRequest
 import com.caballosapp.models.LoginResponse
-import com.caballosapp.network.ApiClient
-import com.caballosapp.network.ApiService
 import kotlinx.coroutines.launch
 import com.caballosapp.models.RegisterRequest
 import com.caballosapp.network.RetrofitClient
@@ -16,7 +14,7 @@ class AuthViewModel : ViewModel() {
     val loginResponse = MutableLiveData<LoginResponse?>()
     val error = MutableLiveData<String?>()
 
-    private val api = ApiClient.retrofit.create(ApiService::class.java)
+    private val api = RetrofitClient.api
 
     fun login(email: String, password: String) {
         viewModelScope.launch {

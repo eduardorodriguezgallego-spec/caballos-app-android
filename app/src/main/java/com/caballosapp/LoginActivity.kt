@@ -18,6 +18,17 @@ class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val prefs = getSharedPreferences("caballosapp", MODE_PRIVATE)
+        val tokenGuardado = prefs.getString("token", null)
+
+        if (!tokenGuardado.isNullOrEmpty()) {
+            val intent = Intent(this, ReservasActivity::class.java)
+            intent.putExtra("token", tokenGuardado)
+            startActivity(intent)
+            finish()
+            return
+        }
+
         val fondo = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER
@@ -93,11 +104,16 @@ class LoginActivity : ComponentActivity() {
         btnRegistro.setOnClickListener {
             startActivity(Intent(this, RegistroActivity::class.java))
         }
-
+        
         viewModel.loginResponse.observe(this) { response ->
             if (response != null) {
+                prefs.edit()
+                    .putString("token", response.token)
+                    .apply()
+
                 val intent = Intent(this, ReservasActivity::class.java)
                 intent.putExtra("token", response.token)
+
                 startActivity(intent)
                 finish()
             }
