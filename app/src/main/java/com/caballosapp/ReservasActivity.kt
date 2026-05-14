@@ -103,7 +103,17 @@ class ReservasActivity : ComponentActivity() {
         }
 
         btnLogout.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
+
+            val prefs = getSharedPreferences("caballosapp", MODE_PRIVATE)
+            prefs.edit().clear().apply()
+
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags =
+                Intent.FLAG_ACTIVITY_NEW_TASK or
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+            startActivity(intent)
+
             finish()
         }
 
